@@ -6,7 +6,7 @@
 /*   By: bdelamea <bdelamea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 23:10:46 by benoit            #+#    #+#             */
-/*   Updated: 2024/08/02 16:34:32 by bdelamea         ###   ########.fr       */
+/*   Updated: 2024/08/03 13:42:33 by bdelamea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,33 +16,107 @@
 # include "Array.hpp"
 
 template <typename T>
-Array<T>::Array(void) {
-	
-}
+Array<T>::Array(void): _data(new T()), _len(0) { return ; }
 
-template <typename T = unsigned int>
-Array<T>::Array(unsigned int n) {
-	
+template <typename T>
+Array<T>::Array(unsigned int n): _len(static_cast<size_t>(n)) {
+	if (this->_len == 0) {
+		try {
+			this->_data = new T();
+		} catch (const std::bad_alloc & e) {
+			std::cerr << "\033[1m\033[31mError, allocation failed: " << e.what() << "\033[0m" << std::endl;
+			this->_len = 0;
+		}
+	} else {
+		try {
+			this->_data = new T[this->_len](); // Adding the () to initialize the array
+		} catch (const std::bad_alloc & e) {
+			std::cerr << "\033[1m\033[31mError, allocation failed: " << e.what() << "\033[0m" << std::endl;
+			this->_len = 0;
+		}
+	}
 }
 
 template <typename T>
-Array<T>::~Array<T>(void) {
-	
+Array<T>::Array(const Array & src): _len(src.size()) {
+	if (src.size() == 0) {
+		try {
+			this->_data = new T();
+			this->_data[0] = src._data[0];
+		} catch (const std::bad_alloc & e) {
+			std::cerr << "\033[1m\033[31mError, allocation failed: " << e.what() << "\033[0m" << std::endl;
+			this->_len = 0;
+		}
+	} else {
+		try {
+			this->_data = new T[this->_len];
+			for (size_t i = 0; i < this->_len; i++)
+				this->_data[i] = src._data[i];
+		} catch (const std::bad_alloc & e) {
+			std::cerr << "\033[1m\033[31mError, allocation failed: " << e.what() << "\033[0m" << std::endl;
+			this->_len = 0;
+		}
+	}
 }
 
 template <typename T>
-Array<T>::Array(const Array & src) {
-
+Array<T>::~Array(void) {
+	if (this->_len == 0)
+		delete this->_data;
+	else
+		delete [] this->_data;
 }
 
 template <typename T>
-Array & Array<T>::operator=(const Array & rhs) {
-	
+Array<T> & Array<T>::operator=(const Array & rhs) {
+	delete [] this->_data;
+	this->_len = rhs.size();
+	if (rhs.size() == 0) {
+		try {
+			this->_data = new T();
+		} catch (const std::bad_alloc & e) {
+			std::cerr << "\033[1m\033[31mError, allocation failed: " << e.what() << "\033[0m" << std::endl;
+			this->_len = 0;
+		}
+	} else {
+		try {
+			this->_data = new T[this->_len];
+			for (size_t i = 0; i < rhs.size(); i++)
+				this->_data[i] = rhs._data[i];
+		} catch (const std::bad_alloc & e) {
+			std::cerr << "\033[1m\033[31mError, allocation failed: " << e.what() << "\033[0m" << std::endl;
+			this->_len = 0;
+		}
+	}
+	return *this;
 }
 
 template <typename T>
-t_size Array<T>::size(void) const {
-	
+T & Array<T>::operator[](unsigned int n) const {
+	if (this->_len == 0)
+		return this->_data[0];
+	else if (n >= this->_len)
+		throw std::out_of_range("Index out of range");
+	else
+		return this->_data[n];
+}
+
+template <typename T>
+size_t Array<T>::size(void) const { return this->_len; }
+
+template <typename T>
+std::ostream & operator<<(std::ostream & o, const Array<T> & src) {
+	o << "[";
+	if (src.size() == 0)
+		o << src[0];
+	else
+		for (size_t i = 0; i < src.size(); i++) {
+			o << src[i];
+			if (i < src.size() - 1)
+				o << ", ";
+		}
+	o << "]";
+	return o;
 }
 
 #endif

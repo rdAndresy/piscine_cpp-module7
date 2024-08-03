@@ -6,7 +6,7 @@
 #    By: bdelamea <bdelamea@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/18 14:35:06 by bdelamea          #+#    #+#              #
-#    Updated: 2024/08/02 16:13:55 by bdelamea         ###   ########.fr        #
+#    Updated: 2024/08/03 13:00:21 by bdelamea         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,8 @@ OBJS        := $(SRCS:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
 
 CXX         := c++
-CXXFLAGS      := -std=c++98 -Wall -Wextra -Werror -g
-INCXXFLAGS    := $(addprefix -I ,$(INCS))
+CXXFLAGS    := -std=c++98 -Wall -Wextra -Werror -g
+INCXXFLAGS  := $(addprefix -I ,$(INCS))
 
 RMF         := rm -f
 RMR         := rm -rf
