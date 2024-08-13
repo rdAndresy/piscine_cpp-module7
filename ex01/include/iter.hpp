@@ -6,7 +6,7 @@
 /*   By: bdelamea <bdelamea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 23:10:46 by benoit            #+#    #+#             */
-/*   Updated: 2024/08/02 16:13:28 by bdelamea         ###   ########.fr       */
+/*   Updated: 2024/08/13 10:28:27 by bdelamea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ std::ostream &	operator<<(std::ostream & o, const Test & rhs);
 
 // Iter template function
 template <typename T, typename U, typename V>
-void iter(T &addr, const U len, V &f) {
+void iter(T & addr, const U len, V & f) {
 	for (U i = 0; i < len; i++)
 		f(addr[i]);
 }
 
-// Very particular case of const function, not sure of its relevance
+// Very particular case of const function, not sure of it's relevant
 template <typename T, typename U, typename V>
-void iter(T &addr, const U len, const V &f) {
+void iter(T & addr, const U len, const V & f) {
 	for (U i = 0; i < len; i++)
 		f(addr[i]);
 }

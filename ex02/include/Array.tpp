@@ -6,7 +6,7 @@
 /*   By: bdelamea <bdelamea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 23:10:46 by benoit            #+#    #+#             */
-/*   Updated: 2024/08/03 13:42:33 by bdelamea         ###   ########.fr       */
+/*   Updated: 2024/08/13 10:43:04 by bdelamea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,13 @@
 # include "Array.hpp"
 
 template <typename T>
-Array<T>::Array(void): _data(new T()), _len(0) { return ; }
+Array<T>::Array(void): _len(0) {
+	try {
+		this->_data = new T();
+	} catch (const std::bad_alloc & e) {
+		std::cerr << "\033[1m\033[31mError, allocation failed: " << e.what() << "\033[0m" << std::endl;
+	}
+}
 
 template <typename T>
 Array<T>::Array(unsigned int n): _len(static_cast<size_t>(n)) {
@@ -25,7 +31,6 @@ Array<T>::Array(unsigned int n): _len(static_cast<size_t>(n)) {
 			this->_data = new T();
 		} catch (const std::bad_alloc & e) {
 			std::cerr << "\033[1m\033[31mError, allocation failed: " << e.what() << "\033[0m" << std::endl;
-			this->_len = 0;
 		}
 	} else {
 		try {
